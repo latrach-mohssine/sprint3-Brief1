@@ -7,12 +7,12 @@
 
 import { getdata } from "./data.js";
 import { getPokimon } from "./data.js";
-let caracters = []
+let caracters = [];
 let contourLoad = 21;
-let pokemon = []
-caracters = await getdata(1,contourLoad);
+let pokemon = [];
+caracters = await getdata(1, contourLoad);
 
-console.log(caracters)
+console.log(caracters);
 // -------------------------------------------------------------
 // 1. AFFICHAGE
 // Supprimez les cartes écrites à la main dans index.html et
@@ -25,46 +25,44 @@ const typeColors = {
   Électrik: "#FEF9C3",
   Normal: "#F3F4F6",
   Glace: "#80DEEA",
-  Ténèbres: "#B8B5E8"
+  Ténèbres: "#B8B5E8",
 };
 const container = document.getElementById("character-container");
 const template = document.getElementById("character-template");
-function displayCharacters(list){
-    container.replaceChildren()
+function displayCharacters(list) {
+  container.replaceChildren();
 
-list.forEach(character => {
-   
-  const copy = template.content.cloneNode(true)
-  const card = copy.querySelector("article");
-  card.dataset.id = character.id;
-  const image = copy.querySelector(".character-image")
-const background = copy.querySelector(".character-background")
-const bckground = copy.querySelector(".bg-logo")
-  image.src = character.image
-  image.alt = character.name
-background.style.backgroundColor = typeColors[character.type] || "#F3F4F6"
-bckground.style.backgroundColor = typeColors[character.type] || "#F3F4F6"
-   copy.querySelector(".character-id").textContent = `${character.id}`;
-   copy.querySelector(".character-name").textContent = character.name;
-   copy.querySelector(".character-type").textContent = character.type;
-   copy.querySelector(".character-level").textContent = `${character.level}`;
+  list.forEach((character) => {
+    const copy = template.content.cloneNode(true);
+    const card = copy.querySelector("article");
+    card.dataset.id = character.id;
+    const image = copy.querySelector(".character-image");
+    const background = copy.querySelector(".character-background");
+    const bckground = copy.querySelector(".bg-logo");
+    image.src = character.image;
+    image.alt = character.name;
+    background.style.backgroundColor = typeColors[character.type] || "#F3F4F6";
+    bckground.style.backgroundColor = typeColors[character.type] || "#F3F4F6";
+    copy.querySelector(".character-id").textContent = `${character.id}`;
+    copy.querySelector(".character-name").textContent = character.name;
+    copy.querySelector(".character-type").textContent = character.type;
+    copy.querySelector(".character-level").textContent = `${character.level}`;
     container.append(copy);
-})};
-displayCharacters(caracters)
+  });
+}
+displayCharacters(caracters);
 // -------------------------------------------------------------
 // 2. DÉTAIL
 // Un clic sur une carte ouvre le panneau de détail :
 // image, description, et statistiques affichées en barres.
 // -------------------------------------------------------------
 const detail = document.getElementById("detail");
- detail.style.backgroundColor =  "#F3F4F6";
+detail.style.backgroundColor = "#F3F4F6";
 function showDetails(character) {
-
-const detailId = document.getElementById("detail-id");
-const detailType = document.getElementById("detail-type");
-const detailDescription = document.getElementById("detail-text");
-const detail = document.getElementById("detai-bg-image");
-
+  const detailId = document.getElementById("detail-id");
+  const detailType = document.getElementById("detail-type");
+  const detailDescription = document.getElementById("detail-text");
+  const detail = document.getElementById("detai-bg-image");
 
   detailName.textContent = character.name;
   detailImage.src = character.image;
@@ -73,24 +71,14 @@ const detail = document.getElementById("detai-bg-image");
   detailType.textContent = character.type;
   detailDescription.textContent = character.description;
 
-
-detailType.style.backgroundColor =typeColors[character.type] || "#F3F4F6";
+  detailType.style.backgroundColor = typeColors[character.type] || "#F3F4F6";
   detail.style.backgroundColor = typeColors[character.type] || "#F3F4F6";
- const attackPercentage = Math.min(
-    (character.stats.attack / 155) * 100,
-    100);
-  const hpPercentage = Math.min(
-    (character.stats.hp / 155) * 100,
-    100
-  );
-   const dfPercentage = Math.min(
-    (character.stats.defence / 155) * 100,
-    100
-  );
+  const attackPercentage = Math.min((character.stats.attack / 155) * 100, 100);
+  const hpPercentage = Math.min((character.stats.hp / 155) * 100, 100);
+  const dfPercentage = Math.min((character.stats.defence / 155) * 100, 100);
   akBar.style.width = `${attackPercentage}%`;
   hpBar.style.width = `${hpPercentage}%`;
   dfBar.style.width = `${dfPercentage}%`;
-
 }
 
 const detailName = document.getElementById("detail-name");
@@ -103,41 +91,35 @@ const akBar = document.getElementById("detail-attack-bar");
 
 const dfBar = document.getElementById("detail-defence-bar");
 
-const paneuDaitail = document.getElementById("detail")
+const paneuDaitail = document.getElementById("detail");
 
-const removeBtn = document.getElementById("detail-x")
+const removeBtn = document.getElementById("detail-x");
 
-const parent = paneuDaitail.parentElement
- paneuDaitail.remove()
-container.addEventListener("click", event => {
+const parent = paneuDaitail.parentElement;
+paneuDaitail.remove();
+container.addEventListener("click", (event) => {
   if (event.target.closest("button")) return;
 
   const card = event.target.closest("article");
 
-
   if (!card || !container.contains(card)) return;
 
-  const selectedCharacter = caracters.find(character => {
+  const selectedCharacter = caracters.find((character) => {
     return character.id === card.dataset.id;
-
   });
 
   if (selectedCharacter) {
     parent.appendChild(paneuDaitail);
     showDetails(selectedCharacter);
   }
- 
 });
 // const restoreBtn = document.getElementById("")
 
-const card = document.getElementById("p-detail")
-
+const card = document.getElementById("p-detail");
 
 removeBtn.addEventListener("click", () => {
- paneuDaitail.remove()
- 
-  
-})
+  paneuDaitail.remove();
+});
 
 // -------------------------------------------------------------
 // 3. RECHERCHE
@@ -150,7 +132,7 @@ removeBtn.addEventListener("click", () => {
 //   names = eva.target.value.toLowerCase()
 //   const result = []
 //   for(const nam of caracters){
-  
+
 //     if(nam.name.toLowerCase().includes(names) === true){
 //     result.push(nam)
 //     }
@@ -163,67 +145,64 @@ removeBtn.addEventListener("click", () => {
 // « Tous » réinitialise le filtre.
 // La recherche et le filtre fonctionnent ENSEMBLE.
 // -------------------------------------------------------------
-const filterCaracters = document.getElementById("filters")
-let typeSelected = "Tous"
-filterCaracters.addEventListener("click",eventfilter =>{
+const filterCaracters = document.getElementById("filters");
+let typeSelected = "Tous";
+filterCaracters.addEventListener("click", (eventfilter) => {
   const button = eventfilter.target.closest("button");
-  if(!button || !filterCaracters.contains(button)) return;
-   typeSelected = button.dataset.type;
- typeSelected = button.dataset.type;
+  if (!button || !filterCaracters.contains(button)) return;
+  typeSelected = button.dataset.type;
+  typeSelected = button.dataset.type;
 
-updateCharacters();
-
-}
-)
-let names = ""
-const searchinput = document.getElementById("search")
+  updateCharacters();
+});
+let names = "";
+const searchinput = document.getElementById("search");
 
 function updateCharacters() {
   names = searchinput.value.toLowerCase();
-  const result = []
-  for(const nam of caracters){
-  
-//.includes(names)
-    if( names ==="" &&(typeSelected === "Tous" || nam.type === typeSelected)) {
-  result.push(nam);
-}
+  const result = [];
+  for (const nam of caracters) {
+    //.includes(names)
+    if (
+      names === "" &&
+      (typeSelected === "Tous" || nam.type === typeSelected)
+    ) {
+      result.push(nam);
+    }
   }
-  displayCharacters(result)
+  displayCharacters(result);
 }
 
-const botonSearsh = document.getElementById("searchBoton")
+const botonSearsh = document.getElementById("searchBoton");
 // botonSearsh.addEventListener("click", async()=>{
 //   const chearchValue = document.getElementById("search").value.toLowerCase().trim();
-  
+
 //  let caracterS=await getPokimon(chearchValue)
 //  displayCharacters(caracterS)
 
-  
 // })
 
-const chearchValue = document.getElementById("search")
+const chearchValue = document.getElementById("search");
 
-chearchValue.addEventListener("keydown",async()=>{
-  const chearchValue = document.getElementById("search").value.toLowerCase().trim();
-  
- let caracterS=await getPokimon(chearchValue)
- displayCharacters(caracterS)
+chearchValue.addEventListener("keydown", async () => {
+  const chearchValue = document
+    .getElementById("search")
+    .value.toLowerCase()
+    .trim();
 
-  
-})
+  let caracterS = await getPokimon(chearchValue);
+  displayCharacters(caracterS);
+});
 
-
-
-
-const botonAdd = document.getElementById("moreId")
-botonAdd.addEventListener("click" ,async()=>{
-const startOfCard = contourLoad+1
-const numberOfcard = contourLoad+20
-const newCharacters = await getdata(startOfCard,numberOfcard)
-caracters.push(...newCharacters)
-contourLoad +=newCharacters.length
-updateCharacters()
-})
+const botonAdd = document.getElementById("moreId");
+botonAdd.addEventListener("click", async () => {
+  const startOfCard = contourLoad + 1;
+  const numberOfcard = contourLoad + 20;
+  const newCharacters = await getdata(startOfCard, numberOfcard);
+  caracters.push(...newCharacters);
+  contourLoad += newCharacters.length;
+  updateCharacters();
+});
 searchinput.addEventListener("input", updateCharacters);
 // -------------------------------------------------------------
 // 5. CRÉER UNE CRÉATURE
@@ -232,20 +211,17 @@ searchinput.addEventListener("input", updateCharacters);
 // champ, et n'ajoutez jamais une créature invalide.
 // -------------------------------------------------------------
 
-
 // -------------------------------------------------------------
 // 6. MON ÉQUIPE
 // Boutons « Ajouter à l'équipe » et « Retirer », gérés avec UN SEUL
 // écouteur sur la grille et UN SEUL sur l'équipe (délégation).
 // -------------------------------------------------------------
 
-
 // -------------------------------------------------------------
 // 7. RÈGLES DE L'ÉQUIPE
 // 6 créatures au maximum, pas de doublon, un message clair quand
 // une action est refusée, et un compteur (x/6).
 // -------------------------------------------------------------
-
 
 // -------------------------------------------------------------
 // BONUS : LocalStorage, Fetch API, tri, comparaison
