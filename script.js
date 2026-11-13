@@ -6,9 +6,11 @@
 // Une carte GitHub Projects et au moins un commit par fonctionnalité.
 
 import { getdata } from "./data.js";
+import { getPokimon } from "./data.js";
 let caracters = []
-
-caracters = await getdata();
+let contourLoad = 21;
+let pokemon = []
+caracters = await getdata(1,contourLoad);
 
 console.log(caracters)
 // -------------------------------------------------------------
@@ -181,13 +183,47 @@ function updateCharacters() {
   const result = []
   for(const nam of caracters){
   
-
-    if(nam.name.toLowerCase().includes(names) &&(typeSelected === "Tous" || nam.type === typeSelected)) {
+//.includes(names)
+    if( names ==="" &&(typeSelected === "Tous" || nam.type === typeSelected)) {
   result.push(nam);
 }
   }
   displayCharacters(result)
 }
+
+const botonSearsh = document.getElementById("searchBoton")
+// botonSearsh.addEventListener("click", async()=>{
+//   const chearchValue = document.getElementById("search").value.toLowerCase().trim();
+  
+//  let caracterS=await getPokimon(chearchValue)
+//  displayCharacters(caracterS)
+
+  
+// })
+
+const chearchValue = document.getElementById("search")
+
+chearchValue.addEventListener("keydown",async()=>{
+  const chearchValue = document.getElementById("search").value.toLowerCase().trim();
+  
+ let caracterS=await getPokimon(chearchValue)
+ displayCharacters(caracterS)
+
+  
+})
+
+
+
+
+const botonAdd = document.getElementById("moreId")
+botonAdd.addEventListener("click" ,async()=>{
+const startOfCard = contourLoad+1
+const numberOfcard = contourLoad+20
+const newCharacters = await getdata(startOfCard,numberOfcard)
+caracters.push(...newCharacters)
+contourLoad +=newCharacters.length
+updateCharacters()
+})
 searchinput.addEventListener("input", updateCharacters);
 // -------------------------------------------------------------
 // 5. CRÉER UNE CRÉATURE
